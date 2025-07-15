@@ -68,9 +68,19 @@ python app.py
 
 El servidor estará disponible en `http://localhost:8001`
 
-### Endpoints
+### 🎯 Interfaz Web
+Abre tu navegador y ve a: **http://localhost:8001**
 
-#### 1. Información de la API
+La interfaz web te permite:
+- ✅ **Arrastrar y soltar** archivos de video
+- ✅ **Seleccionar formato** de audio (MP3, WAV, OGG, AAC, FLAC)
+- ✅ **Vista previa** del video antes de extraer
+- ✅ **Descarga automática** del audio extraído
+- ✅ **Barra de progreso** durante el procesamiento
+
+### 📡 API REST
+
+#### 1. Interfaz web
 ```http
 GET /
 ```
@@ -153,6 +163,8 @@ audio-extractor-api/
 ├── .env.example       # Ejemplo de variables de entorno
 ├── .gitignore         # Archivos a ignorar en git
 ├── README.md          # Este archivo
+├── static/            # Archivos estáticos
+│   └── index.html     # Interfaz web
 ├── temp_files/        # Archivos temporales (creado automáticamente)
 └── logs/              # Logs de la aplicación (creado automáticamente)
 ```
@@ -214,8 +226,8 @@ docker run -p 8001:8001 audio-extractor
 
 ## 📈 Roadmap
 
+- [x] ~~Interfaz web opcional~~ ✅ **Completado**
 - [ ] Soporte para Docker
-- [ ] Interfaz web opcional
 - [ ] Procesamiento en lotes
 - [ ] Autenticación API
 - [ ] Métricas y monitoreo

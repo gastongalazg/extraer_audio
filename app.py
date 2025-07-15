@@ -1,5 +1,6 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 import subprocess
 import uuid
@@ -38,6 +39,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Servir archivos estáticos
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 class AudioExtractor:
@@ -225,18 +229,22 @@ async def health_check():
 
 @app.get("/")
 async def root():
-    """Información de la API"""
-    return {
-        "name": "Audio Extractor API",
-        "version": "1.0.0",
-        "description": "API para extraer audio de archivos de video usando FFmpeg",
-        "endpoints": {
-            "POST /extract-audio": "Extraer audio de un video",
-            "GET /cleanup/{file_id}": "Limpiar archivos temporales",
-            "GET /health": "Estado del servidor"
-        },
-        "supported_formats": list(config.SUPPORTED_FORMATS.keys())
-    }
+    """Servir interfaz web"""
+    try:
+        with open("static/index.html", "r", encoding="utf-8") as f:
+            return HTMLResponse(content=f.read())
+    except FileNotFoundError:
+        return {
+            "name": "Audio Extractor API",
+            "version": "1.0.0",
+            "description": "API para extraer audio de archivos de video usando FFmpeg",
+            "endpoints": {
+                "POST /extract-audio": "Extraer audio de un video",
+                "GET /cleanup/{file_id}": "Limpiar archivos temporales",
+                "GET /health": "Estado del servidor"
+            },
+            "supported_formats": list(config.SUPPORTED_FORMATS.keys())
+        }
 
 
 if __name__ == "__main__":
